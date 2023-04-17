@@ -2,6 +2,8 @@ import flatpickr from "flatpickr";
 
 import "flatpickr/dist/flatpickr.min.css";
 
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
 const refs = {
   pickrInput: document.querySelector('#datetime-picker'),
   startTimerButton: document.querySelector('button[data-start]'),
@@ -25,27 +27,25 @@ const options = {
   onClose(selectedDates) {
     console.log(selectedDates[0]);
     if (Date.now() > selectedDates[0]) {
-      window.alert('Please choose a date in the future');
+      Notify.failure('Please choose a date in the future');
       return
     }
+
     startTimerButton.disabled = false;
 
-    // const userDate = selectedDates[0].getTime();
     
     startTimerButton.addEventListener('click', () => {
        timerId = setInterval(() => {
-        // const trueDate = Date.now()
         const timeRemaining = selectedDates[0].getTime() - Date.now()
         const { days, hours, minutes, seconds } = convertMs(timeRemaining);
-        daysDateValue.textContent = addLeadingZero(days)
-        hourseDateValue.textContent = addLeadingZero(hours)
-        minutesDateValue.textContent = addLeadingZero(minutes);
-         secondsDateValue.textContent = addLeadingZero(seconds);
-         console.log(timeRemaining)
+        
+         textOfTimer(days, hours, minutes, seconds);
+         
         if (timeRemaining<=0) {
           clearInterval(timerId)
+          textOfTimer('00','00','00','00')
          }
-         
+
       }, 1000);
     });
     
@@ -53,7 +53,15 @@ const options = {
   },
 };
 
-flatpickr(pickrInput, options)
+flatpickr(pickrInput, options);
+
+function textOfTimer(day, hour, minute, second) {
+  daysDateValue.textContent = addLeadingZero(day);
+  hourseDateValue.textContent = addLeadingZero(hour);
+  minutesDateValue.textContent = addLeadingZero(minute);
+  secondsDateValue.textContent = addLeadingZero(second);
+  
+}
 
 function addLeadingZero(value){
   return value.toString().padStart(2, '0')
