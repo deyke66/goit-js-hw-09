@@ -7,7 +7,7 @@ const refs = {
 
 const { startBtn, stopBtn, bodyEl } = refs;
 let intervalId = null;
-
+stopBtn.disabled = true;
 startBtn.addEventListener('click', onStartButtonClick);
 stopBtn.addEventListener('click', onStopButtonClick)
 

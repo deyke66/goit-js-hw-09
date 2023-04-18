@@ -35,11 +35,13 @@ const options = {
 
     
     startTimerButton.addEventListener('click', () => {
+      startTimerButton.disabled = true;
        timerId = setInterval(() => {
         const timeRemaining = selectedDates[0].getTime() - Date.now()
         const { days, hours, minutes, seconds } = convertMs(timeRemaining);
         
          textOfTimer(days, hours, minutes, seconds);
+
          
         if (timeRemaining<=0) {
           clearInterval(timerId)
